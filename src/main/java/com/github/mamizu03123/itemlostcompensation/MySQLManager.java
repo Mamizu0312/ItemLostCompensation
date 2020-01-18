@@ -1,7 +1,6 @@
 package com.github.mamizu03123.itemlostcompensation;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.sql.*;
 
@@ -9,9 +8,6 @@ import java.sql.*;
  * Created by takatronix on 2017/03/05.
  */
 
-
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,7 +19,7 @@ import java.util.logging.Level;
 public class MySQLManager {
 
     public  Boolean debugMode = false;
-    private JavaPlugin plugin;
+    private ItemLostCompensation plugin;
     private String HOST = null;
     private String DB = null;
     private String USER = null;
@@ -39,7 +35,7 @@ public class MySQLManager {
     ////////////////////////////////
     //      コンストラクタ
     ////////////////////////////////
-    public MySQLManager(JavaPlugin plugin, String name) {
+    public MySQLManager(ItemLostCompensation plugin, String name) {
         this.plugin = plugin;
         this.conName = name;
         this.connected = false;
