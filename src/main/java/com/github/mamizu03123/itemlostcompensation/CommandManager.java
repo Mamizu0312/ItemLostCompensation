@@ -21,9 +21,9 @@ import java.util.List;
 public class CommandManager implements CommandExecutor {
     ItemLostCompensation plugin;
     MySQLManager sql;
-    public CommandManager(ItemLostCompensation plugin, MySQLManager sql) {
+    public CommandManager(ItemLostCompensation plugin) {
         this.plugin = plugin;
-        this.sql = sql;
+        this.sql = plugin.sql;
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -54,10 +54,10 @@ public class CommandManager implements CommandExecutor {
                     nometa.setLore(nolore);
                     no.setItemMeta(nometa);
 
-                    Inventory pinv = p.getInventory();
-                    pinv.setItem(11, yes);
-                    pinv.setItem(15, no);
-                    p.openInventory(pinv);
+                    Inventory inv = Bukkit.createInventory(null, 27, plugin.prefix);
+                    inv.setItem(11, yes);
+                    inv.setItem(15, no);
+                    p.openInventory(inv);
                     return true;
                 }
             ItemStack slot1 = new ItemStack(Material.PAPER, 1, (short) 0);
@@ -70,19 +70,25 @@ public class CommandManager implements CommandExecutor {
 
             ItemStack slot2 = new ItemStack(Material.PAPER, 1, (short) 0);
             ItemMeta slot2meta = slot1.getItemMeta();
-            slot1meta.setDisplayName("スロット1");
+            slot2meta.setDisplayName("スロット2");
             List<String> slot2lore = new ArrayList<>();
             slot2lore.add("現在スロット2は空いています");
-            slot1meta.setLore(slot2lore);
-            slot1.setItemMeta(slot2meta);
+            slot2meta.setLore(slot2lore);
+            slot2.setItemMeta(slot2meta);
 
             ItemStack slot3 = new ItemStack(Material.PAPER, 1, (short) 0);
             ItemMeta slot3meta = slot1.getItemMeta();
-            slot1meta.setDisplayName("スロット1");
+            slot3meta.setDisplayName("スロット3");
             List<String> slot3lore = new ArrayList<>();
             slot3lore.add("現在スロット3は空いています");
-            slot1meta.setLore(slot3lore);
-            slot1.setItemMeta(slot3meta);
+            slot3meta.setLore(slot3lore);
+            slot3.setItemMeta(slot3meta);
+            Inventory inv = Bukkit.createInventory(null, 9, plugin.prefix);
+            inv.setItem(0,slot1);
+            inv.setItem(1,slot2);
+            inv.setItem(2,slot3);
+            p.openInventory(inv);
+            return true;
         }
 
         if(args[0].equalsIgnoreCase("open")) {
@@ -183,6 +189,7 @@ public class CommandManager implements CommandExecutor {
             } catch(SQLException e) {
                 p.sendMessage(plugin.prefix + "データベースエラーが発生しました");
                 e.printStackTrace();
+                return true;
             }
             if(slot1data == null) {
                 //TODO:なにも登録されてない処理
@@ -204,7 +211,9 @@ public class CommandManager implements CommandExecutor {
                     return true;
                 }
                 String handItemstr = handItem.toString();
-                sql.execute()
+                sql.execute("UPDATE ITEMSLOT2 SET '"+handItemstr+"'");
+                p.sendMessage(plugin.prefix + "アイテムが登録されました");
+                return true;
             }
             ResultSet rs = sql.query("SELECT * FROM PLAYERDATA WHERE UUID = '"+p.getUniqueId()+"'");
             String slot2data = null;
@@ -213,6 +222,7 @@ public class CommandManager implements CommandExecutor {
             } catch (SQLException e) {
                 p.sendMessage(plugin.prefix + "データベースエラーが発生しました");
                 e.printStackTrace();
+                return true;
             }
             if(slot2data == null) {
                 TextComponent tc = new TextComponent();
@@ -222,12 +232,37 @@ public class CommandManager implements CommandExecutor {
                 return true;
             }
         }
+        if(args[0].equalsIgnoreCase("saveslot3")) {
+            if(args[1].equalsIgnoreCase("regist")) {
+                ItemStack handItem = p.getInventory().getItemInMainHand();
+                if(handItem == null) {
+                    p.sendMessage(plugin.prefix + "アイテムがありません！");
+                    return true;
+                }
+                String handItemstr = handItem.toString();
+                sql.execute("UPDATE * FROM PLAYERDATA WHERE UUID = '"+p.getUniqueId()+"'");
+                p.sendMessage(plugin.prefix + "で＾他ベースエラーが発生しました");
+                return true;
+            }
+            ResultSet rs = sql.query("SELECT * FROM PLAYERDATA WHERE UUID = '"+p.getUniqueId()+"'");
+            String slot3data = null;
+            try {
+                slot3data = rs.getString("ITEMSLOT3");
+            } catch(SQLException e) {
+                p.sendMessage(plugin.prefix + "データベースエラーが発生しました");
+                e.printStackTrace();
+            }
+            if(slot3data == null) {
+                TextComponent tc = new TextComponent();
+                tc.setText("ここをクリック");
+                tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ilc saveslot3 regist"));
+                p.sendMessage(plugin.prefix + "登録したいアイテムを持って" + tc);
+                return true;
+            }
+        }
 
 
         return true;
     }
 
-    public void registerPlayer(Player p) {
-        sql.execute("INSERT INTO PLAYERDATA VALUE ('"+p.getName()+"' , '"+p.getUniqueId()+"', NULL, NULL, NULL");
-    }
 }

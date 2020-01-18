@@ -30,8 +30,6 @@ public class MySQLManager {
     private Connection con = null;
     private String conName;
     private MySQLFunc MySQL;
-    private ConfigManager config;
-    HashMap<String,String> configs;
     ////////////////////////////////
     //      コンストラクタ
     ////////////////////////////////
@@ -39,7 +37,6 @@ public class MySQLManager {
         this.plugin = plugin;
         this.conName = name;
         this.connected = false;
-        this.config = plugin.config;
         HOST = plugin.HOST;
         DB = plugin.DB;
         USER = plugin.USER;

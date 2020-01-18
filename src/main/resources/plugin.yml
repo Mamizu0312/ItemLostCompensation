@@ -1,3 +1,7 @@
 name: ItemLostCompensation
 version: ${project.version}
 main: com.github.mamizu03123.itemlostcompensation.ItemLostCompensation
+commands:
+  ilc:
+    description: ItemLostCompensation
+    default: op

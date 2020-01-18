@@ -12,8 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EventManager implements Listener {
-    ItemLostCompensation plugin;
-    MySQLManager sql;
+    private ItemLostCompensation plugin;
+    private MySQLManager sql;
     public EventManager(ItemLostCompensation plugin) {
         this.plugin = plugin;
         this.sql = plugin.sql;
@@ -25,7 +25,7 @@ public class EventManager implements Listener {
         if(plugin.onYNFirst.contains(p.getUniqueId())) {
             event.setCancelled(true);
             if(event.getSlot() == 11) {
-                sql.execute("INSERT INTO PLAYERDATA VALUE('"+p.getName()+"' , '"+p.getUniqueId()+"' , NULL, NULL, NULL");
+                plugin.registerPlayer(p);
                 p.sendMessage(plugin.prefix + "登録が完了しました！");
                 return;
             }
@@ -33,6 +33,7 @@ public class EventManager implements Listener {
                 p.sendMessage(plugin.prefix + "キャンセルされました");
                 return;
             }
+            return;
         }
 
         if(plugin.onOpeningItemList.containsKey(p.getUniqueId())) {
