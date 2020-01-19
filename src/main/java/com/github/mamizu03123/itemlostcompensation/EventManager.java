@@ -37,7 +37,8 @@ public class EventManager implements Listener {
 
                 case "SLOT1":
 
-                    event.setCancelled(event.getClickedInventory().equals(plugin.onOverWriteSLOT.get(p.getUniqueId()).get()));
+                    event.setCancelled(true);
+
                     if(event.getSlot() == 11) {
 
                         p.closeInventory();

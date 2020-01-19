@@ -22,7 +22,7 @@ public final class ItemLostCompensation extends JavaPlugin {
     public HashMap<UUID, UUID> onOpeningItemList = new HashMap<>(); //key: commandrunplayer, value: targetplayer
     public EventManager event;
     public List<UUID> onChoosingItem = new ArrayList<>();
-    public HashMap<UUID, HashMap<Inventory, String>> onOverWriteSLOT = new HashMap<>(); //key: puuidk, value: (pinv:slottype)
+    public HashMap<UUID, HashMap<Inventory, String>> onOverWriteSLOT = new HashMap<>(); //key: puuid, value: (pinv:slottype)
 
 
     @Override

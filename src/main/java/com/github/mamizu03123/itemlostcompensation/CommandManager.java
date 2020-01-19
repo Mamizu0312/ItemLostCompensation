@@ -176,7 +176,7 @@ public class CommandManager implements CommandExecutor {
                 inv.setItem(11, yesButtom);
                 inv.setItem(15, noButtom);
 
-                HashMap<String, Inventory> pdata = new HashMap<>();
+                HashMap<Inventory, String> pdata = new HashMap<>();
                 pdata.put(inv, "SLOT1");
                 plugin.onOverWriteSLOT.put(p.getUniqueId(), pdata);
                 p.openInventory(inv);
